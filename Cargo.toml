@@ -1,0 +1,9 @@
+[package]
+name = "simple-webserver"
+version = "0.0.0"
+authors = ["Arie Roos <arie@itecho.co.za>"]
+edition = "2018"
+
+[dependencies]
+actix-web = "1.0"
+actix-files = "0.1.4"
