@@ -1,7 +1,7 @@
 [package]
 name = "simple-webserver"
 version = "0.0.0"
-authors = ["Arie Roos <arie@itecho.co.za>"]
+authors = ["Arie Roos <ariechildofgod@gmail.com>"]
 edition = "2018"
 
 [dependencies]
