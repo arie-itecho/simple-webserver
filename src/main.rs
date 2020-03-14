@@ -1,17 +1,17 @@
 use actix_files::NamedFile;
-use actix_web::{web, App, Responder, HttpServer, HttpRequest};
+use actix_web::{error, web, App, HttpRequest, HttpServer, Result};
 
 use std::path::PathBuf;
 
-fn index() -> impl Responder {
-    find_file("index.html")
+async fn index() -> Result<NamedFile> {
+    find_file("index.html").await
 }
 
-fn static_file(name: HttpRequest) -> impl Responder {
-    find_file(&name.path()[1..])
+async fn static_file(name: HttpRequest) -> Result<NamedFile> {
+    find_file(&name.path()[1..]).await
 }
 
-fn find_file(path: &str) -> impl Responder {
+async fn find_file(path: &str) -> Result<NamedFile> {
     let mut final_path = "frontend".parse::<PathBuf>().unwrap();
     final_path.push(path.parse::<PathBuf>().unwrap());
 
@@ -20,20 +20,29 @@ fn find_file(path: &str) -> impl Responder {
         Err(x) => {
             println!("Error finding file: {}", final_path.display());
             println!("{}", x);
-            Err(x)
+            Err(error::ErrorNotFound("File Not Found"))
         }
     }
 }
 
-fn main() {
+async fn serve(address: &str) {
     HttpServer::new(|| {
         App::new()
-            .route("/", web::to(index))
-            .route("/scripts/.*", web::to(static_file))
-            .route("/styles/.*", web::to(static_file))
+            .route("/", web::get().to(index))
+            .route("/scripts/.*", web::get().to(static_file))
+            .route("/styles/.*", web::get().to(static_file))
     })
-    .bind("127.0.0.1:8808")
+    .bind(address)
     .unwrap()
     .run()
+    .await
     .unwrap();
+}
+
+#[actix_rt::main]
+async fn main() {
+    let address = "127.0.0.1:8808";
+    let server = serve(address);
+    println!("Listening on {a}", a = address);
+    server.await
 }
