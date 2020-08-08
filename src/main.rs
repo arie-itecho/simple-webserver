@@ -31,6 +31,7 @@ async fn serve(address: &str) {
             .route("/", web::get().to(index))
             .route("/scripts/.*", web::get().to(static_file))
             .route("/styles/.*", web::get().to(static_file))
+            .route("/dist/.*", web::get().to(static_file))
     })
     .bind(address)
     .unwrap()
