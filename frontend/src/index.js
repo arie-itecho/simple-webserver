@@ -1,0 +1,1 @@
+alert("arie, kry webpack reg")

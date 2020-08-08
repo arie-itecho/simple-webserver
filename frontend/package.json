@@ -1,0 +1,14 @@
+{
+  "name": "gamepie",
+  "version": "0.0.0",
+  "description": "yo",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "arie roos",
+  "devDependencies": {
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
